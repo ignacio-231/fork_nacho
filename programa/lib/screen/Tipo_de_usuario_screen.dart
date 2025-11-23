@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:programa/components/BotonPersonalUdec.dart';
 import 'package:programa/Styles/appBar.dart';
-
-import 'package:programa/componenetes/BotonPersonalUdec.dart';
-import 'package:programa/ventanas/Ventana_inicio_de_usuario.dart';
-import 'package:programa/ventanas/agregar_reporte_screen.dart';
-import 'package:programa/Clases/ReporteService.dart';
+import 'package:programa/screen/agregar_reporte_screen.dart';
 import 'package:provider/provider.dart';
 
 class VentanaDeReporteObjeto extends StatefulWidget {
@@ -62,7 +59,7 @@ class _VentanaDeReporteObjetoState extends State<VentanaDeReporteObjeto> {
                 icono1: Icons.search,
                 icono2: Icons.find_in_page,
               ),
-              
+
               BotonVentanaPersona(
                 texto: "Realizar reporte",
                 personal: esPersona,

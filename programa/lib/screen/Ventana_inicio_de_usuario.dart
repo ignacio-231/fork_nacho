@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:programa/Styles/Text.dart';
 import 'package:programa/Styles/app_colors.dart';
-import 'package:programa/ventanas/Administrador.dart';
-import 'package:programa/ventanas/Tipo_de_usuario.dart';
-import 'package:programa/ventanas/objetos_perdidos_screen.dart';
+import 'package:programa/screen/Administrador.dart';
+import 'package:programa/screen/Tipo_de_usuario_screen.dart';
+import 'package:programa/screen/objetos_perdidos_screen.dart';
 
 class VentanaInicioDeUsuario extends StatelessWidget {
   const VentanaInicioDeUsuario({super.key});

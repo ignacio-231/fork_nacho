@@ -1,22 +1,19 @@
+import 'package:programa/Class/reporte.dart';
 import 'package:string_similarity/string_similarity.dart';
-import 'package:programa/Clases/reporte.dart';
-import 'package:programa/coincidencia.dart';
+import 'package:programa/Class/coincidencia.dart';
 
 class SimilitudService {
   static List<Coincidencia> encontrarCoincidencias(
     List<Reporte> todosLosReportes, {
     double similitudMinima = 0.8,
   }) {
-    final perdidos = todosLosReportes.where((r) => !r.encontrado).toList();
-    final encontrados = todosLosReportes.where((r) => r.encontrado).toList();
+    final perdidos = todosLosReportes.where((r) => !r.tipoObjeto).toList();
+    final encontrados = todosLosReportes.where((r) => r.tipoObjeto).toList();
     final List<Coincidencia> coincidencias = [];
 
     for (var perdido in perdidos) {
       for (var encontrado in encontrados) {
-        final similitud = _calcularSimilitud(
-          perdido.nombre,
-          encontrado.nombre,
-        );
+        final similitud = _calcularSimilitud(perdido.nombre, encontrado.nombre);
 
         if (similitud >= similitudMinima) {
           coincidencias.add(

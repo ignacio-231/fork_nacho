@@ -1,4 +1,4 @@
-import 'package:programa/Clases/reporte.dart';
+import 'package:programa/Class/reporte.dart';
 
 class Coincidencia {
   final Reporte perdido;

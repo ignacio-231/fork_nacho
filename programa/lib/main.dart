@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:programa/Class/ReporteService.dart';
 import 'package:programa/Styles/Text.dart';
 import 'package:programa/Styles/app_colors.dart';
-import 'package:programa/ventanas/Ventana_inicio_de_usuario.dart';
-import 'package:programa/Clases/ReporteService.dart';
+import 'package:programa/screen/Ventana_inicio_de_usuario.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp(),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => ReporteService(),
-      
+
       child: MaterialApp(
         title: 'Objetos perdidos',
         debugShowCheckedModeBanner: false,

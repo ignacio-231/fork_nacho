@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:programa/Clases/reporte.dart';
-import 'package:programa/Clases/ReporteService.dart';
+import 'package:programa/Class/ReporteService.dart';
+import 'package:programa/Class/reporte.dart';
+
 import 'package:provider/provider.dart';
 
 class AgregarReporteScreen extends StatefulWidget {
@@ -60,18 +61,20 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
         imagenUrl: _imagenUrlController.text.isEmpty
             ? 'https://via.placeholder.com/150'
             : _imagenUrlController.text,
-        encontrado: _encontrado,
         descripcion: _descripcionController.text,
         nombreUsuario: _nombreUsuarioController.text,
         contactoUsuario: _contactoUsuarioController.text,
         PersonalUdec: true,
-        tipoObjeto: true,
+        estado: false,
+        tipoObjeto: _encontrado,
       );
-        Provider.of<ReporteService>(context, listen: false)
-          .agregarNuevoReporte(nuevoReporte);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Reporte agregado'))
-    );
+      Provider.of<ReporteService>(
+        context,
+        listen: false,
+      ).agregarNuevoReporte(nuevoReporte);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Reporte agregado')));
       Navigator.of(context).pop();
     }
   }

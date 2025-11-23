@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:programa/Clases/reporte.dart';
+import 'package:programa/Class/reporte.dart';
 import 'package:programa/services/similitud_service.dart';
 import 'package:programa/widgets/coincidencia_card.dart';
-import 'package:programa/coincidencia.dart';
+import 'package:programa/Class/coincidencia.dart';
 
 class AvisosScreen extends StatefulWidget {
   final List<Reporte> todosLosReportes;
@@ -80,10 +80,7 @@ class _AvisosScreenState extends State<AvisosScreen> {
             Text(
               'No se encontraron objetos perdidos y encontrados con nombres similares.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
             ),
           ],
         ),

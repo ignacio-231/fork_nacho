@@ -4,12 +4,9 @@ import 'package:pdf/pdf.dart' as pdf;
 import 'package:printing/printing.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:pdf/src/pdf/page_format.dart' as pfn;
-
+import 'package:programa/Class/reporte.dart';
 
 // --- ¡ASEGÚRATE DE IMPORTAR TU CLASE 'Reporte' ---
-import 'package:programa/Clases/reporte.dart';
 
 class PantallaVistaPrevia extends StatelessWidget {
   // --- EL WIDGET AHORA RECIBE EL REPORTE ---
@@ -23,17 +20,16 @@ class PantallaVistaPrevia extends StatelessWidget {
 
     // --- NUEVO: Cargar el logo de la UdeC desde los assets ---
     final logoImage = pw.MemoryImage(
-      (await rootBundle.load('assets/images/LogoUdec.png')).buffer.asUint8List(),
+      (await rootBundle.load(
+        'assets/images/LogoUdec.png',
+      )).buffer.asUint8List(),
     );
 
     // Cargamos fuentes (asegúrate de tener el paquete pdf_google_fonts en pubspec)
     final font = await PdfGoogleFonts.tinosRegular();
     final boldFont = await PdfGoogleFonts.tinosBold();
 
-    final pdfTheme = pw.ThemeData.withFont(
-      base: font,
-      bold: boldFont,
-    );
+    final pdfTheme = pw.ThemeData.withFont(base: font, bold: boldFont);
 
     // Cargamos la imagen del reporte
     pw.ImageProvider? imageProvider;
@@ -59,21 +55,20 @@ class PantallaVistaPrevia extends StatelessWidget {
             margin: pw.EdgeInsets.only(bottom: 3.0 * pdf.PdfPageFormat.mm),
             padding: pw.EdgeInsets.only(bottom: 3.0 * pdf.PdfPageFormat.cm),
             decoration: pw.BoxDecoration(
-              border: pw.Border(bottom: pw.BorderSide(color: pdf.PdfColors.grey, width: 0.5)),
+              border: pw.Border(
+                bottom: pw.BorderSide(color: pdf.PdfColors.grey, width: 0.5),
+              ),
             ),
             child: pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.SizedBox(
-                  height: 40,
-                  child: pw.Image(logoImage),
-                ),
+                pw.SizedBox(height: 40, child: pw.Image(logoImage)),
                 pw.Text(
                   'Informe de Objeto',
                   style: pw.Theme.of(context).defaultTextStyle.copyWith(
-                        color: pdf.PdfColors.grey,
-                        fontSize: 12,
-                      ),
+                    color: pdf.PdfColors.grey,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -87,7 +82,9 @@ class PantallaVistaPrevia extends StatelessWidget {
             margin: pw.EdgeInsets.only(top: 1.0 * pdf.PdfPageFormat.cm),
             child: pw.Text(
               'Página ${context.pageNumber} de ${context.pagesCount}',
-              style: pw.Theme.of(context).defaultTextStyle.copyWith(color: pdf.PdfColors.grey),
+              style: pw.Theme.of(
+                context,
+              ).defaultTextStyle.copyWith(color: pdf.PdfColors.grey),
             ),
           );
         },
@@ -99,7 +96,10 @@ class PantallaVistaPrevia extends StatelessWidget {
               level: 0,
               child: pw.Text(
                 'Informe de pérdida/encuentro de objeto',
-                style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
+                style: pw.TextStyle(
+                  fontSize: 24,
+                  fontWeight: pw.FontWeight.bold,
+                ),
               ),
             ),
             pw.SizedBox(height: 1 * pdf.PdfPageFormat.cm),
@@ -116,7 +116,10 @@ class PantallaVistaPrevia extends StatelessWidget {
                       : pw.Container(
                           color: pdf.PdfColors.grey300,
                           child: pw.Center(
-                            child: pw.Text('Sin Imagen', style: pw.TextStyle(color: pdf.PdfColors.grey600)),
+                            child: pw.Text(
+                              'Sin Imagen',
+                              style: pw.TextStyle(color: pdf.PdfColors.grey600),
+                            ),
                           ),
                         ),
                 ),
@@ -127,8 +130,14 @@ class PantallaVistaPrevia extends StatelessWidget {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       _buildDetalleRow('Objeto:', reporte.nombre),
-                      _buildDetalleRow('Estado:', reporte.encontrado ? 'Encontrado' : 'Perdido'),
-                      _buildDetalleRow('Fecha:', "${reporte.fecha.day}/${reporte.fecha.month}/${reporte.fecha.year}"),
+                      _buildDetalleRow(
+                        'Estado:',
+                        reporte.tipoObjeto ? 'Encontrado' : 'Perdido',
+                      ),
+                      _buildDetalleRow(
+                        'Fecha:',
+                        "${reporte.fecha.day}/${reporte.fecha.month}/${reporte.fecha.year}",
+                      ),
                     ],
                   ),
                 ),
@@ -139,7 +148,9 @@ class PantallaVistaPrevia extends StatelessWidget {
             // Descripción
             _buildSectionHeader('Descripción dada por el usuario'),
             pw.Text(
-              (reporte.descripcion?.isEmpty ?? true) ? 'No se proporcionó descripción.' : reporte.descripcion ?? '',
+              (reporte.descripcion?.isEmpty ?? true)
+                  ? 'No se proporcionó descripción.'
+                  : reporte.descripcion,
               style: const pw.TextStyle(lineSpacing: 2),
             ),
             pw.SizedBox(height: 1 * pdf.PdfPageFormat.cm),
@@ -159,12 +170,8 @@ class PantallaVistaPrevia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Vista Previa del PDF'),
-      ),
-      body: PdfPreview(
-        build: (format) => generarPdf(reporte),
-      ),
+      appBar: AppBar(title: Text('Vista Previa del PDF')),
+      body: PdfPreview(build: (format) => generarPdf(reporte)),
     );
   }
 }
@@ -175,7 +182,9 @@ pw.Widget _buildSectionHeader(String title) {
     margin: pw.EdgeInsets.only(bottom: 0.5 * pdf.PdfPageFormat.mm),
     padding: pw.EdgeInsets.only(bottom: 2 * pdf.PdfPageFormat.mm),
     decoration: pw.BoxDecoration(
-      border: pw.Border(bottom: pw.BorderSide(color: pdf.PdfColors.blueGrey, width: 1.5)),
+      border: pw.Border(
+        bottom: pw.BorderSide(color: pdf.PdfColors.blueGrey, width: 1.5),
+      ),
     ),
     child: pw.Text(
       title,
@@ -204,7 +213,9 @@ pw.Widget _buildDetalleRow(String titulo, String? valor) {
         pw.SizedBox(width: 10),
         pw.Expanded(
           flex: 7,
-          child: pw.Text(valor == null || valor.isEmpty ? 'No especificado' : valor),
+          child: pw.Text(
+            valor == null || valor.isEmpty ? 'No especificado' : valor,
+          ),
         ),
       ],
     ),

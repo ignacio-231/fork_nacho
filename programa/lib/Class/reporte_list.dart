@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:programa/Clases/reporte.dart';
-import 'package:programa/componenetes/reporte_card.dart';
+import 'package:programa/Class/reporte.dart';
+import 'package:programa/components/reporte_card.dart';
 
 class ListaReportes extends StatelessWidget {
   final List<Reporte> reportes;

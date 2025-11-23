@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:programa/Clases/reporte.dart';
-import 'package:programa/Clases/reporte_list.dart';
-
+import 'package:programa/Class/ReporteService.dart';
+import 'package:programa/Class/reporte_list.dart';
 import 'package:provider/provider.dart';
-import 'package:programa/Clases/ReporteService.dart';
 
 class EncontradosScreen extends StatelessWidget {
   const EncontradosScreen({super.key});
@@ -13,7 +11,7 @@ class EncontradosScreen extends StatelessWidget {
       builder: (context, reporteService, child) {
         // Obtenemos los reportes desde el servicio
         final encontrados = reporteService.reportes
-            .where((r) => r.encontrado)
+            .where((r) => r.tipoObjeto)
             .toList();
 
         return Scaffold(

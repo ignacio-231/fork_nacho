@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:programa/Clases/reporte.dart';
+import 'package:programa/Class/reporte.dart';
+import 'package:programa/screen/detalle_reporte_screen.dart';
 // ¡Importa la nueva pantalla que acabamos de crear!
-import 'package:programa/ventanas/detalle_reporte_screen.dart';
 
 // 1. Convertimos a StatefulWidget
 class ReporteCard extends StatefulWidget {
@@ -71,13 +71,13 @@ class _ReporteCardState extends State<ReporteCard> {
         },
         trailing: IconButton(
           icon: Icon(
-            widget.reporte.encontrado
+            widget.reporte.estado
                 ? Icons.check_circle
                 : Icons.check_circle_outline,
-            color: widget.reporte.encontrado ? Colors.green : Colors.grey,
+            color: widget.reporte.estado ? Colors.green : Colors.grey,
           ),
           onPressed: () {
-            widget.onEncontradoChanged(!widget.reporte.encontrado);
+            widget.onEncontradoChanged(!widget.reporte.estado);
           },
         ),
       ),

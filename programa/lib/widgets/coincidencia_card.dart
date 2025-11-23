@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:programa/coincidencia.dart';
-import 'package:programa/Clases/reporte.dart';
+import 'package:programa/Class/reporte.dart';
+import 'package:programa/Class/coincidencia.dart';
 
 class CoincidenciaCard extends StatelessWidget {
   final Coincidencia coincidencia;
@@ -150,10 +150,7 @@ class CoincidenciaCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   'Fecha: ${reporte.fecha.day}/${reporte.fecha.month}/${reporte.fecha.year}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                 ),
               ],
             ),
