@@ -28,7 +28,7 @@ class _VentanaDeReporteObjetoState extends State<VentanaDeReporteObjeto> {
 
   @override
   Widget build(BuildContext context) {
-    final bg = Theme.of(context).colorScheme.background;
+    final bg = Theme.of(context).colorScheme.surface;
 
     return Scaffold(
       appBar: const UdecAppBarRightLogo(title: "OBJETOS PERDIDOS"),

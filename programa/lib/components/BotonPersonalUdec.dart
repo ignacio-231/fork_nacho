@@ -149,7 +149,7 @@ class BotonVentanaPersona extends StatelessWidget {
     final button = ElevatedButton(
       onPressed: enabled
           ? () =>
-                Navigator.of(context).push(MaterialPageRoute(builder: destino!))
+                Navigator.of(context).push(MaterialPageRoute(builder: destino))
           : null,
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(220, 48),

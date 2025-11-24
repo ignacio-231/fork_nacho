@@ -8,6 +8,7 @@ class Reporte {
   final bool PersonalUdec;
   final bool tipoObjeto;
   bool estado;
+  final String ubicacion;
 
   Reporte({
     required this.nombre,
@@ -19,6 +20,7 @@ class Reporte {
     required this.PersonalUdec,
     required this.tipoObjeto,
     required this.estado,
+    required this.ubicacion,
   });
 
   Reporte copyWith({
@@ -32,6 +34,7 @@ class Reporte {
     bool? PersonalUdec,
     bool? tipoObjeto,
     required bool estado,
+    String? ubicacion,
   }) {
     return Reporte(
       nombre: nombre ?? this.nombre,
@@ -43,6 +46,7 @@ class Reporte {
       PersonalUdec: PersonalUdec ?? this.PersonalUdec,
       tipoObjeto: tipoObjeto ?? this.tipoObjeto,
       estado: estado,
+      ubicacion: ubicacion ?? this.ubicacion,
     );
   }
 }

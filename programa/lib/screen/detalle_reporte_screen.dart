@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:programa/Class/informe.dart';
 import 'package:programa/Class/reporte.dart';
 import 'package:programa/Styles/appBar.dart';
-import 'package:programa/Styles/appBar.dart';
 
 class DetalleReporteScreen extends StatelessWidget {
   final Reporte reporte;

@@ -27,13 +27,10 @@ class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
   }
 
   Future<void> _irAmiUbicacion() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) return;
 
-    permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) return;
@@ -74,7 +71,6 @@ class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
               _controller.complete(controller);
             },
             onCameraMove: (CameraPosition position) {
-              // Actualizamos la variable cada vez que mueves el mapa
               _ubicacionSeleccionada = position.target;
             },
           ),
@@ -95,19 +91,14 @@ class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
               onPressed: () {
-                print(
-                  "BOTÓN PRESIONADO. Datos a enviar: $_ubicacionSeleccionada",
-                );
-
+                // ⚠️ ESTA ES LA PARTE QUE TE FALTABA O ESTABA MAL ⚠️
                 if (_ubicacionSeleccionada != null) {
-                  // Devuelve los datos A LA PANTALLA ANTERIOR
+                  // Envía las coordenadas de vuelta a AgregarReporteScreen
                   Navigator.pop(context, _ubicacionSeleccionada);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text(
-                        "Mueve el mapa un poco para detectar ubicación...",
-                      ),
+                      content: Text("Espera a que el GPS cargue..."),
                     ),
                   );
                 }

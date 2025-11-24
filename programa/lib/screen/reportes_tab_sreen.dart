@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:programa/Class/ReporteService.dart';
-import 'package:programa/Class/reporte.dart';
 import 'package:programa/Class/reporte_list.dart';
-import 'package:programa/Styles/Text.dart';
 import 'package:programa/screen/agregar_reporte_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -47,27 +45,27 @@ class _ReportesTabsScreenState extends State<ReportesTabsScreen>
             todos.where((r) => !r.estado && r.tipoObjeto).toList()
               ..sort((a, b) => b.fecha.compareTo(a.fecha));
 
-        // Pestaña 3: NOTIFICADOS (Historial / Resueltos, de reporte de objetos perdidos)
         final listaNotificadosPerdidos =
             todos.where((r) => r.estado && !r.tipoObjeto).toList()
               ..sort((a, b) => b.fecha.compareTo(a.fecha));
+
         final listaNotificadosEncontrados =
             todos.where((r) => r.estado && r.tipoObjeto).toList()
               ..sort((a, b) => b.fecha.compareTo(a.fecha));
+
         int cantidadPerdidos = listaNotificadosPerdidos.length;
         int cantidadEncontrados = listaNotificadosEncontrados.length;
-        print(cantidadEncontrados);
-        print(cantidadPerdidos);
         return Scaffold(
           appBar: AppBar(
             title: const Text("Reportes de Objetos"),
             bottom: TabBar(
-              controller: _tabController, // Asignamos el controlador
+              controller: _tabController,
               indicatorColor: Colors.blue,
               tabs: const [
                 Tab(text: "Perdidos"),
                 Tab(text: "Encontrados"),
-                Tab(text: "Notificados"), // Aquí llegarán los resueltos
+                Tab(text: "Notificados"),
+                Tab(text: "Avisos"), // Aquí llegarán los resueltos
               ],
             ),
           ),
@@ -93,14 +91,12 @@ class _ReportesTabsScreenState extends State<ReportesTabsScreen>
                           "⚠️ No puedes validar más 'Perdidos'.\n"
                           "Necesitas validar un reporte de 'Objeto Encontrado' para mantener el balance.",
                         ),
-                        backgroundColor:
-                            Colors.orange, // Naranja de advertencia
+                        backgroundColor: Colors.orange,
                         duration: Duration(seconds: 3),
                       ),
                     );
                     _tabController.animateTo(2);
                   }
-                  // Agrega esta condición para saltar a la pestaña de encotrado
                 },
               ),
 
@@ -122,23 +118,21 @@ class _ReportesTabsScreenState extends State<ReportesTabsScreen>
                           "⚠️ No puedes validar más 'Encontrados'.\n"
                           "Primero debe validarse un reporte de 'Objeto Perdido'.",
                         ),
-                        backgroundColor:
-                            Colors.orange, // Naranja de advertencia
+                        backgroundColor: Colors.orange,
                         duration: Duration(seconds: 3),
                       ),
                     );
-                  } //Para saltar a la pestaña de notifaciones
+                  }
                 },
               ),
 
-              // TAB 3: Notificados (Aquí caen los que marcaste con check)
+              // tab3: Notificados
               Row(
                 children: [
                   Expanded(
                     child: ListaReportes(
                       reportes: listaNotificadosPerdidos,
                       onReporteChanged: (reporte, nuevoEstado) {
-                        // Si le quitas el check, vuelve a su lista original
                         reporteService.actualizarEstadoReporte(
                           reporte,
                           nuevoEstado,
@@ -148,12 +142,7 @@ class _ReportesTabsScreenState extends State<ReportesTabsScreen>
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Icon(
-                      Icons.swap_horiz, // <--- El icono de flechas -> <-
-                      color:
-                          Colors.grey, // Color sugerido para que no distraiga
-                      size: 30,
-                    ),
+                    child: Icon(Icons.swap_horiz, color: Colors.grey, size: 30),
                   ),
                   Expanded(
                     child: ListaReportes(

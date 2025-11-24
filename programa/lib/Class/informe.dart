@@ -34,7 +34,7 @@ class PantallaVistaPrevia extends StatelessWidget {
     // Cargamos la imagen del reporte
     pw.ImageProvider? imageProvider;
     try {
-      if (reporte.imagenUrl != null && reporte.imagenUrl.isNotEmpty) {
+      if (reporte.imagenUrl.isNotEmpty) {
         imageProvider = await networkImage(reporte.imagenUrl);
       }
     } catch (e) {
@@ -148,7 +148,7 @@ class PantallaVistaPrevia extends StatelessWidget {
             // Descripción
             _buildSectionHeader('Descripción dada por el usuario'),
             pw.Text(
-              (reporte.descripcion?.isEmpty ?? true)
+              (reporte.descripcion.isEmpty ?? true)
                   ? 'No se proporcionó descripción.'
                   : reporte.descripcion,
               style: const pw.TextStyle(lineSpacing: 2),

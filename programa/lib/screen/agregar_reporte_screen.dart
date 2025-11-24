@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:programa/Class/ReporteService.dart';
 import 'package:programa/Class/reporte.dart';
+import 'package:programa/components/Mapa_Selecionado.dart';
 
 import 'package:provider/provider.dart';
 
@@ -24,9 +26,11 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
   final _nombreUsuarioController = TextEditingController();
   final _contactoUsuarioController = TextEditingController();
   final _imagenUrlController = TextEditingController();
+  final _ubicacionManualController = TextEditingController(); // <--- CAMBIO
 
   DateTime _fechaSeleccionada = DateTime.now();
   bool _encontrado = false;
+  LatLng? _ubicacionGPS;
 
   @override
   void dispose() {
@@ -35,6 +39,7 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
     _nombreUsuarioController.dispose();
     _contactoUsuarioController.dispose();
     _imagenUrlController.dispose();
+    _ubicacionManualController.dispose();
     super.dispose();
   }
 
@@ -53,8 +58,46 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
     }
   }
 
+  Future<void> _seleccionarUbicacion() async {
+    final resultado = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MapaSeleccionScreen()),
+    );
+
+    if (resultado != null && resultado is LatLng) {
+      setState(() {
+        _ubicacionGPS = resultado;
+
+        // 1. Preparamos la etiqueta con las coordenadas
+        String etiquetaGPS =
+            " [GPS: ${resultado.latitude.toStringAsFixed(5)}, ${resultado.longitude.toStringAsFixed(5)}]";
+
+        // 2. Obtenemos lo que el usuario ya había escrito
+        String textoActual = _ubicacionManualController.text;
+
+        // 3. Si ya existía una etiqueta GPS vieja, la quitamos para actualizarla
+        if (textoActual.contains(" [GPS:")) {
+          textoActual = textoActual.split(" [GPS:")[0];
+        }
+
+        // 4. Escribimos el resultado final en el campo de texto
+        if (textoActual.isEmpty) {
+          _ubicacionManualController.text = "Ubicación GPS$etiquetaGPS";
+        } else {
+          _ubicacionManualController.text = "$textoActual$etiquetaGPS";
+        }
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("¡Ubicación precisa guardada y escrita!")),
+      );
+    }
+  }
+
   void _agregarReporte() {
     if (_formKey.currentState!.validate()) {
+      String ubicacionFinal = _ubicacionManualController.text;
+
       final nuevoReporte = Reporte(
         nombre: _nombreController.text,
         fecha: _fechaSeleccionada,
@@ -67,11 +110,14 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
         PersonalUdec: true,
         estado: false,
         tipoObjeto: _encontrado,
+        ubicacion: ubicacionFinal, // Se guarda lo que se ve en pantalla
       );
+
       Provider.of<ReporteService>(
         context,
         listen: false,
       ).agregarNuevoReporte(nuevoReporte);
+
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Reporte agregado')));
@@ -93,6 +139,7 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
           key: _formKey,
           child: ListView(
             children: [
+              // Reporte
               TextFormField(
                 controller: _nombreController,
                 decoration: const InputDecoration(
@@ -139,6 +186,53 @@ class _AgregarReporteScreenState extends State<AgregarReporteScreen> {
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller:
+                          _ubicacionManualController, // Aquí se mostrará el GPS
+                      decoration: const InputDecoration(
+                        labelText: 'Ubicación / Referencia',
+                        hintText: 'Ej: Sala 204...',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.place),
+                      ),
+                      maxLines: 2,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    children: [
+                      IconButton.filled(
+                        onPressed:
+                            _seleccionarUbicacion, // Llama a la función del mapa
+                        style: IconButton.styleFrom(
+                          backgroundColor: _ubicacionGPS != null
+                              ? Colors.green
+                              : Colors.blue,
+                        ),
+                        icon: const Icon(
+                          Icons.my_location,
+                          color: Colors.white,
+                        ),
+                        tooltip: 'Ubicación Precisa',
+                      ),
+                      Text(
+                        _ubicacionGPS != null ? "¡Listo!" : "GPS",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: _ubicacionGPS != null
+                              ? Colors.green
+                              : Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
 
